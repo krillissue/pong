@@ -1,7 +1,6 @@
 #include <Entity.hpp>
 #include <Game.hpp>
 #include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
 #include <Sprite.hpp>
 #include <Window.hpp>
 

@@ -33,16 +33,6 @@ void Window::clean_up() {
     SDL_DestroyTexture(sprite.texture);
 }
 
-void Window::load_sprite(std::string sprite_path, std::string sprite_name) {
-  SDL_Texture *texture = NULL;
-  texture = IMG_LoadTexture(pr_renderer, sprite_path.c_str());
-
-  if (!texture)
-    crash("IMG_LoadTexture failed.", ErrorType::IMG);
-
-  pr_sprites.push_back({.texture = texture, .name = sprite_name});
-}
-
 void Window::render_sprite(std::string sprite_name, int x, int y) {
   SDL_Texture *sprite_texture = NULL;
 

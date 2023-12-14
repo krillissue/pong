@@ -12,7 +12,6 @@ public:
 
   void clean_up();
 
-  void load_sprite(std::string sprite_path, std::string sprite_name);
   void render_sprite(std::string sprite_name, int x, int y);
 
   void display_render();
