@@ -80,5 +80,30 @@ void Window::render_sprite(std::string sprite_name, int x, int y) {
   SDL_RenderCopy(pr_renderer, sprite_texture, NULL, &dst);
 }
 
+void Window::load_sound(std::string sound_path, std::string sound_name) {
+  Mix_Chunk *chunk = NULL;
+  chunk = Mix_LoadWAV(sound_path.c_str());
+
+  if (!chunk)
+    crash("Mix_LoadWAV failed.", ErrorType::MIX);
+
+  pr_sounds.push_back({.chunk = chunk, .name = sound_name});
+}
+
+void Window::play_sound(std::string sound_name) {
+  Mix_Chunk *sound_chunk = NULL;
+
+  for (const Sound &sound : pr_sounds)
+    if (sound.name == sound_name)
+      sound_chunk = sound.chunk;
+
+  if (!sound_chunk)
+    crash("Cannot play sound " + sound_name +
+              " because it was not found in window.pr_sounds",
+          ErrorType::CUSTOM);
+
+  Mix_PlayChannel(-1, sound_chunk, 0);
+}
+
 void Window::display_render() { SDL_RenderPresent(pr_renderer); }
 void Window::clear_render() { SDL_RenderClear(pr_renderer); }

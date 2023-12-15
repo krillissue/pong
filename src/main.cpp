@@ -2,6 +2,7 @@
 #include <Game.hpp>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_mixer.h>
 #include <Window.hpp>
 #include <iostream>
 #include <tools/crash.hpp>
@@ -53,8 +54,12 @@ int main(int argc, char *argv[]) {
   if (!IMG_Init(IMG_INIT_PNG))
     crash("IMG_Init failed.", ErrorType::IMG);
 
+  if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) != EXIT_SUCCESS)
+    crash("Mix_OpenAudio failed.", ErrorType::MIX);
+
   Window window("Pong", 640, 480, accelerated, vsync);
   window.load_sprite("res/gfx/ball.png", "ball");
+  window.load_sound("res/sfx/player_scores.wav", "player_scores");
 
   Game game(&window);
   game.mainloop();
@@ -62,6 +67,8 @@ int main(int argc, char *argv[]) {
 
   SDL_Quit();
   IMG_Quit();
+  Mix_CloseAudio();
+  Mix_Quit();
 
   return EXIT_SUCCESS;
 }

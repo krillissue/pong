@@ -3,6 +3,7 @@
 enum ErrorType {
   SDL,
   IMG,
+  MIX,
   CUSTOM,
 };
 #endif

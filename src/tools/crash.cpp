@@ -1,6 +1,7 @@
 #include <ErrorType.hpp>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_mixer.h>
 #include <iostream>
 #include <tools/crash.hpp>
 
@@ -14,6 +15,10 @@ void crash(std::string msg, ErrorType errorType) {
 
   case ErrorType::IMG:
     std::cerr << "IMG_Error: " << IMG_GetError() << std::endl;
+    break;
+
+  case ErrorType::MIX:
+    std::cerr << "Mix_Error: " << Mix_GetError() << std::endl;
     break;
 
   case ErrorType::CUSTOM:
