@@ -1,5 +1,6 @@
 #include <ErrorType.hpp>
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
 #include <Sprite.hpp>
 #include <Window.hpp>
 #include <string>
@@ -21,6 +22,19 @@ Window::Window(std::string title, int w, int h, bool accelerated, bool vsync)
     renderer_flags = renderer_flags | SDL_RENDERER_PRESENTVSYNC;
 
   pr_renderer = SDL_CreateRenderer(pr_window, -1, renderer_flags);
+
+  {
+    int player_w = 16;
+    int player_h = 80;
+
+    SDL_Surface *surface =
+        SDL_CreateRGBSurface(0, player_w, player_h, 32, 0, 0, 0, 0);
+    SDL_FillRect(surface, NULL, SDL_MapRGB(surface->format, 255, 255, 255));
+    pr_sprites.push_back(
+        {.texture = SDL_CreateTextureFromSurface(pr_renderer, surface),
+         .name = "player"});
+    SDL_FreeSurface(surface);
+  }
 }
 
 Window::~Window() { clean_up(); }
@@ -31,6 +45,16 @@ void Window::clean_up() {
 
   for (const Sprite &sprite : pr_sprites)
     SDL_DestroyTexture(sprite.texture);
+}
+
+void Window::load_sprite(std::string sprite_path, std::string sprite_name) {
+  SDL_Texture *texture = NULL;
+  texture = IMG_LoadTexture(pr_renderer, sprite_path.c_str());
+
+  if (!texture)
+    crash("IMG_LoadTexture failed.", ErrorType::IMG);
+
+  pr_sprites.push_back({.texture = texture, .name = sprite_name});
 }
 
 void Window::render_sprite(std::string sprite_name, int x, int y) {

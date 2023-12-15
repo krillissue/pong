@@ -2,6 +2,7 @@
 #define ERRORTYPE_HPP
 enum ErrorType {
   SDL,
+  IMG,
   CUSTOM,
 };
 #endif

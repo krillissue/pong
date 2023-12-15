@@ -1,6 +1,7 @@
 #include <ErrorType.hpp>
 #include <Game.hpp>
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
 #include <Window.hpp>
 #include <iostream>
 #include <tools/crash.hpp>
@@ -49,13 +50,18 @@ int main(int argc, char *argv[]) {
   if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) != EXIT_SUCCESS)
     crash("SDL_Init failed.", ErrorType::SDL);
 
+  if (!IMG_Init(IMG_INIT_PNG))
+    crash("IMG_Init failed.", ErrorType::IMG);
+
   Window window("Pong", 640, 480, accelerated, vsync);
+  window.load_sprite("res/gfx/ball.png", "ball");
 
   Game game(&window);
   game.mainloop();
   game.clean_up();
 
   SDL_Quit();
+  IMG_Quit();
 
   return EXIT_SUCCESS;
 }

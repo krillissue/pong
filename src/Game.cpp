@@ -4,7 +4,10 @@
 #include <Sprite.hpp>
 #include <Window.hpp>
 
-Game::Game(Window *window) : pr_window(window) {}
+Game::Game(Window *window) : pr_window(window) {
+  pr_entities.push_back({.sprite = "player", .x = 10, .y = 10});
+  pr_entities.push_back({.sprite = "ball", .x = 30, .y = 20});
+}
 
 Game::~Game() { clean_up(); }
 void Game::clean_up() { pr_window->clean_up(); }
